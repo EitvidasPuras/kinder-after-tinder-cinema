@@ -12,6 +12,7 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,11 +24,11 @@ public class User {
     private byte role;
 
     public User(User user) {
-        this.id = user.getId();
-        this.firstName = user.getFirstName();
-        this.lastName = user.getLastName();
-        this.email = user.getEmail();
-        this.password = user.getPassword();
-        this.role = user.getRole();
+        id = user.getId();
+        firstName = user.getFirstName();
+        lastName = user.getLastName();
+        email = user.getEmail();
+        password = user.getPassword();
+        role = user.getRole();
     }
 }

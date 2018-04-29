@@ -1,9 +1,11 @@
 package com.kindercinema.kinderaftertindercinema.entity;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 
 public class CustomUserDetails extends User implements UserDetails {
     public CustomUserDetails(User user) {
@@ -12,7 +14,13 @@ public class CustomUserDetails extends User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        String role = "";
+        switch (getRole()) {
+            case 1: role = "CLIENT"; break;
+            case 2: role = "CASHIER"; break;
+            case 3: role = "MANAGER"; break;
+        }
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role));
     }
 
     @Override
@@ -27,17 +35,17 @@ public class CustomUserDetails extends User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
