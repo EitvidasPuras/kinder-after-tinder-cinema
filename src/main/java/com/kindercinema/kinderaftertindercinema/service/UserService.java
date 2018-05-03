@@ -1,6 +1,5 @@
 package com.kindercinema.kinderaftertindercinema.service;
 
-import com.kindercinema.kinderaftertindercinema.entity.CustomUserDetails;
 import com.kindercinema.kinderaftertindercinema.entity.User;
 import com.kindercinema.kinderaftertindercinema.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +9,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
     @Autowired
-    public CustomUserDetailsService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -25,7 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         } else {
-            return new CustomUserDetails(user);
+            return user;
         }
     }
 }
