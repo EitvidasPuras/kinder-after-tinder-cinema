@@ -19,7 +19,7 @@ public class TestController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/test")
+    @GetMapping("/")
     @PreAuthorize("hasAnyRole('CLIENT')")
     public String test(Model model) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

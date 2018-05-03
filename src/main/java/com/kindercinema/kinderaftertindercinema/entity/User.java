@@ -30,9 +30,15 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         String role = "";
         switch (getRole()) {
-            case 1: role = "CLIENT"; break;
-            case 2: role = "CASHIER"; break;
-            case 3: role = "MANAGER"; break;
+            case 1:
+                role = "CLIENT";
+                break;
+            case 2:
+                role = "CASHIER";
+                break;
+            case 3:
+                role = "MANAGER";
+                break;
         }
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role));
     }
