@@ -10,14 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class TestController {
-
-    private final UserRepository userRepository;
-
-    @Autowired
-    public TestController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+public class MainController {
 
     @GetMapping("/")
     @PreAuthorize("hasAnyRole('CLIENT')")
@@ -25,5 +18,15 @@ public class TestController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("name", user.getEmail());
         return "greetings";
+    }
+
+    @GetMapping("/home")
+    public String mainPage() {
+        return "mainPage";
+    }
+
+    @GetMapping("/movies")
+    public String moviesPage() {
+        return "moviesPage";
     }
 }
