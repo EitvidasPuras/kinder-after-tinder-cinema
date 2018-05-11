@@ -28,30 +28,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-            .userDetailsService(userDetailsService)
-            .passwordEncoder(new PasswordEncoder() {
-                @Override
-                public String encode(CharSequence rawPassword) {
-                    return rawPassword.toString();
-                }
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(new PasswordEncoder() {
+                    @Override
+                    public String encode(CharSequence rawPassword) {
+                        return rawPassword.toString();
+                    }
 
-                @Override
-                public boolean matches(CharSequence rawPassword, String encodedPassword) {
-                    return rawPassword.toString().equals(encodedPassword);
-                }
-            });
+                    @Override
+                    public boolean matches(CharSequence rawPassword, String encodedPassword) {
+                        return rawPassword.toString().equals(encodedPassword);
+                    }
+                });
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .authorizeRequests()
+                .authorizeRequests()
                 .anyRequest().permitAll()
-            .and()
-            .formLogin()
+                .and()
+                .formLogin()
                 .usernameParameter("email")
-            .and()
-            .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
+                .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/");
     }
 }
