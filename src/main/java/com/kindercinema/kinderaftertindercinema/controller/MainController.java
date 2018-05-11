@@ -23,8 +23,4 @@ public class MainController {
         return "mainPage";
     }
 
-    @GetMapping("/movies")
-    public String moviesPage() {
-        return "movies/moviesPage";
-    }
 }

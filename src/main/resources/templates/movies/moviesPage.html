@@ -5,21 +5,21 @@
 <body>
 <div th:replace="includes/navbar :: body"></div>
 <div class="container">
-    <div class="form-group row">
+    <div class="row" style="margin-left:0px; margin-top:5px;">
         <label class="col-form-label">Select date</label>
-        <div class="col-sm-3">
+        <div class="col-sm-3" id="select-date">
             <input class="form-control" id="date" type="date">
         </div>
     </div>
-    <h3>Movies Page</h3>
-    <div class="row">
-        <div th:each="i : ${#numbers.sequence( 1, 5)}">
+    <div class="row" id="movie-cards">
+        <div th:each="i : ${#numbers.sequence( 1, 5)}" th:id="movie + ${ i }">
             <div class="col-sm-3" style="padding-top:10px;">
                 <div class="card" style="width: 15rem;">
                     <img class="card-img-top" src="https://placeimg.com/286/180/any" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title" th:text="Movie + ${ i }"></h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the
                             card's content.</p>
                         <a href="#" class="btn btn-primary">Go somewhere</a>
                     </div>
@@ -28,5 +28,31 @@
         </div>
     </div>
 </div>
+<script>
+    $("#select-date").on('change', function (e) {
+        console.log(e.target.value);
+        var date = e.target.value;
+
+        $.ajax({
+            url: "/movies/" + date,
+            dataType: 'json',
+            success: function (result) {
+                $('#movie-cards').children().each(function () {
+                    $(this).hide();
+                });
+
+                result.forEach(function (movie) {
+                    $("#movie" + movie.id).show();
+                    movie.sessions.forEach(function (session) {
+
+                    });
+                });
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    });
+</script>
 </body>
 </html>
