@@ -1,5 +1,6 @@
 package com.kindercinema.kinderaftertindercinema.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,5 +17,6 @@ public class Seat {
 
     @ManyToOne
     @JoinColumn(name = "row_id")
+    @JsonIgnore
     private Row row;
 }

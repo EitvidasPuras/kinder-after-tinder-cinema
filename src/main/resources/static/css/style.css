@@ -5,6 +5,12 @@
     margin-right: 16px;
 }
 
+.btn-payment {
+    background-color: #4ffa4c;
+    border-color: #ffffff;
+    margin-right: 16px;
+}
+
 .card-sessions {
     display: grid;
     font-size: 13px;

@@ -1,5 +1,6 @@
 package com.kindercinema.kinderaftertindercinema.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,7 @@ public class Hall {
     private String name;
 
     @OneToMany(mappedBy = "hall")
+    @JsonIgnore
     private List<Session> sessions;
 
     @OneToMany(mappedBy = "hall")
