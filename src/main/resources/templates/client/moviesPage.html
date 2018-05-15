@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="includes/head :: head">
+</head>
+<body>
+<div th:replace="includes/navbar :: body"></div>
+<div class="container">
+    <div class="row" style="margin-left:0px; margin-top:5px;">
+        <label class="col-form-label">Select date</label>
+        <div class="col-sm-3" id="select-date">
+            <input class="form-control" id="date" type="date">
+        </div>
+    </div>
+    <div class="row" id="movie-cards">
+
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        // executes when HTML-Document is loaded and DOM is ready
+        $.ajax({
+            url: "/movies/getAll",
+            dataType: 'json',
+            success: function (result) {
+                result.forEach(function (movie) {
+                    $("#movie-cards").append("<div id='movie" + movie.id + "'>" +
+                        "            <div class=\"col-sm-3\" style=\"padding-top:10px;\">" +
+                        "                <div class=\"card\" style=\"width: 15rem;\">" +
+                        "                    <img class=\"card-img-top\" src=\"https://placeimg.com/286/180/any\" alt=\"Card image cap\">" +
+                        "                    <div class=\"card-body\">" +
+                        "                        <h5 class=\"card-title\">" + movie.name + "</h5>" +
+                        "                        <p class=\"card-text\">" + movie.description + "</p>" +
+                        "                        <p class=\"card-text card-sessions\" id=\"movie-sessions-" + movie.id + "\"></p>" +
+                        "                        <a href=\"/movies/" + movie.id + "\" class=\"btn btn-primary\">Review</a>" +
+                        "                    </div>" +
+                        "                </div>" +
+                        "            </div>" +
+                        "        </di>");
+                });
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    });
+    $("#select-date").on('change', function (e) {
+        console.log(e.target.value);
+        var date = e.target.value;
+
+        $.ajax({
+            url: "/movies/" + date,
+            dataType: 'json',
+            success: function (result) {
+                $('#movie-cards').children().each(function () {
+                    $(this).hide();
+                });
+
+                result.forEach(function (movie) {
+                    $("#movie" + movie.id).show();
+                    $("#movie-sessions-" + movie.id).empty();
+                    movie.sessions.forEach(function (session) {
+                        console.log(session);
+                        var dd = new Date(session.startDate);
+                        //var startTime = session.startDate;
+                        //var endTime = session.endTime;
+                        var sessionStartTime = session.startDate.substring(11, 16);
+                        var sessionEndtime = session.endDate.substring(11, 16);
+                        console.log(sessionStartTime);
+                        $("#movie-sessions-" + movie.id).append("<a href=\"/buy/" + session.id + "\">" + sessionStartTime + "-" + sessionEndtime + " </a>")
+                    });
+                });
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -19,16 +19,16 @@ import java.util.List;
 @RequestMapping("/movies")
 public class MovieController {
 
-    private final MovieRepository movieRepositoryRepository;
+    private final MovieRepository movieRepository;
 
     @Autowired
     public MovieController(MovieRepository movieRepository) {
-        this.movieRepositoryRepository = movieRepository;
+        this.movieRepository = movieRepository;
     }
 
     @GetMapping
     public String moviesPage() {
-        return "movies/moviesPage";
+        return "client/moviesPage";
     }
 
     @GetMapping("/{date}")
@@ -38,7 +38,14 @@ public class MovieController {
         Date currentDate = format.parse(date);
         Date nextDate = getNextDay(currentDate);
 
-        List<Movie> movies = movieRepositoryRepository.getMoviesByDay(currentDate, nextDate);
+        List<Movie> movies = movieRepository.getMoviesByDay(currentDate, nextDate);
+        return movies;
+    }
+
+    @GetMapping("/getAll")
+    @ResponseBody
+    public List<Movie> getAllMovies() {
+        List<Movie> movies = movieRepository.findAll();
         return movies;
     }
 
