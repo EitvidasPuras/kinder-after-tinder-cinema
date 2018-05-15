@@ -9,14 +9,15 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Movie {
+public class Hall {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String name;
-    private String description;
-    private boolean is3D;
 
-    @OneToMany(mappedBy = "movie")
+    @OneToMany(mappedBy = "hall")
     private List<Session> sessions;
+
+    @OneToMany(mappedBy = "hall")
+    private List<Row> rows;
 }

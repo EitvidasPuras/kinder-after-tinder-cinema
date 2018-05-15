@@ -37,23 +37,19 @@ public class MovieController {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date currentDate = format.parse(date);
         Date nextDate = getNextDay(currentDate);
-
-        List<Movie> movies = movieRepository.getMoviesByDay(currentDate, nextDate);
-        return movies;
+        return movieRepository.getMoviesByDay(currentDate, nextDate);
     }
 
     @GetMapping("/getAll")
     @ResponseBody
     public List<Movie> getAllMovies() {
-        List<Movie> movies = movieRepository.findAll();
-        return movies;
+        return movieRepository.findAll();
     }
 
     private Date getNextDay(Date currentDate) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(currentDate);
         cal.add(Calendar.DATE, 1);
-
         return cal.getTime();
     }
 }

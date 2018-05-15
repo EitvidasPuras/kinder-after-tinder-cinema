@@ -22,4 +22,9 @@ public class Session {
     @JoinColumn(name = "movie_id")
     @JsonIgnore
     private Movie movie;
+
+    @ManyToOne
+    @JoinColumn(name = "hall_id")
+    @JsonIgnore
+    private Hall hall;
 }

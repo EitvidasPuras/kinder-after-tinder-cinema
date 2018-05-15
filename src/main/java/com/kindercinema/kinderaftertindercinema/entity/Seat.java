@@ -4,19 +4,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
-public class Movie {
+public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private String name;
-    private String description;
-    private boolean is3D;
+    private Integer number;
 
-    @OneToMany(mappedBy = "movie")
-    private List<Session> sessions;
+    @ManyToOne
+    @JoinColumn(name = "row_id")
+    private Row row;
 }

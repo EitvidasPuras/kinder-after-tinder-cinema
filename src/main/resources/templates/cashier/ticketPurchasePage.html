@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="includes/head :: head">
+</head>
+<body>
+<div th:replace="includes/navbar :: body"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <label>Session date</label>
+            <div class="date-cell">
+                <input class="form-control" type="date" id="data">
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <b id="price">Price: </b>
+                <b id="hall">Hall: </b>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="col-sm-6">
+    <label>Movie</label>
+    <div class="dropdown">
+        <select id="filmas" class="form-control" aria-labelledby="dropdownMenuButton">
+            <option>...</option>
+        </select>
+    </div>
+</div>
+<br>
+<div class="col-sm-6">
+    <label>Session time</label>
+    <div class="dropdown">
+        <select id="laikas" class="form-control" aria-labelledby="dropdownMenuButton">
+            <option>...</option>
+        </select>
+    </div>
+</div>
+<br>
+<div class="col-sm-6">
+    <div class="card">
+        <div class="card-header">
+            Seating
+        </div>
+        <div class="card-body">
+            <div>
+                <label>Row</label>
+                <div class="dropdown">
+                    <select id="eile" class="form-control" aria-labelledby="dropdownMenuButton">
+                        <option>...</option>
+                    </select>
+                </div>
+            </div>
+            <br>
+            <div>
+                <label>Seat</label>
+                <div class="dropdown">
+                    <select id="vieta" class="form-control" aria-labelledby="dropdownMenuButton">
+                        <option>...</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script>
+    $("#data").on('change', function (date) {
+        $.ajax({
+            url: '/movies/' + date.target.value,
+            dataType: 'json',
+            type: 'GET',
+            success: function (result) {
+                $('#filmas').empty();
+                if (result.length === 0) {
+                    $('#filmas').append($('<option></option>').attr('value', null).text("Nėra"));
+                } else {
+                    $('#filmas').append($('<option></option>').attr('value', null).text("Pasirinkti"));
+                }
+                result.forEach(function (movie) {
+                    $('#filmas').append($('<option></option>')
+                        .attr('value', movie.id)
+                        .attr('data-movie', JSON.stringify(movie))
+                        .text(movie.name))
+                });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });
+    });
+
+    $("#filmas").change(function () {
+        var option = $(this)[0].selectedOptions[0];
+        var movie = JSON.parse($(option).attr("data-movie"));
+        $('#laikas').empty();
+        if (movie.sessions.length === 0) {
+            $('#laikas').append($('<option></option>').attr('value', null).text("Nėra"));
+        } else {
+            $('#laikas').append($('<option></option>').attr('value', null).text("Pasirinkti"));
+        }
+        movie.sessions.forEach(function (session) {
+            $('#laikas').append($('<option></option>')
+                .attr('value', JSON.stringify(session))
+                .text(session.startDate.substr(11, 5)))
+        })
+    });
+
+    $("#laikas").change(function () {
+        var session = JSON.parse($(this).val());
+        $('#price').text("Price: " + session.price + " €");
+        $('#row').empty();
+        $('#seat').empty();
+
+    })
+</script>
+
+</html>
