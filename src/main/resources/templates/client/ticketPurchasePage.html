@@ -5,61 +5,61 @@
 <body>
 <div th:replace="includes/navbar :: body"></div>
 <div class="container">
-    <div class="row">
+    <div class="row" style="margin-left:0px;">
         <div class="col-sm-6">
-            <label>Session date</label>
+            <label>Date</label>
             <div class="date-cell">
-                <input class="form-control" type="date" id="data">
+                <input class="form-control" type="text" th:value="${#dates.format(sessionas.startDate, 'yyyy-MM-dd')}"
+                       disabled/>
             </div>
         </div>
         <div class="col-sm-6">
             <div class="card">
-                <b>Price: </b>
-                <b>Hall: </b>
+                <b>Price: <span th:text="${sessionas.price}"></span></b>
+                <b>Hall: <span th:text="${sessionas.getHall().name}"></span></b>
             </div>
         </div>
     </div>
-</div>
-<br>
-<div class="col-sm-6">
-    <label>Movie</label>
-    <div class="dropdown">
-        <select id="filmas" class="form-control" aria-labelledby="dropdownMenuButton">
-            <option>...</option>
-        </select>
-    </div>
-</div>
-<br>
-<div class="col-sm-6">
-    <label>Session time</label>
-    <div class="dropdown">
-        <select id="laikas" class="form-control" aria-labelledby="dropdownMenuButton">
-            <option>...</option>
-        </select>
-    </div>
-</div>
-<br>
-<div class="col-sm-6">
-    <div class="card">
-        <div class="card-header">
-            Seating
+    <br>
+    <div class="col-sm-6">
+        <label>Movie</label>
+        <div class="dropdown">
+            <input class="form-control" type="text" th:value="${sessionas.getMovie().name}" disabled/>
         </div>
-        <div class="card-body">
-            <div>
-                <label>Row</label>
-                <div class="dropdown">
-                    <select id="eile" class="form-control" aria-labelledby="dropdownMenuButton">
-                        <option>...</option>
-                    </select>
+    </div>
+    <br>
+    <div class="col-sm-6">
+        <label>Session time</label>
+        <div class="dropdown">
+            <input class="form-control" type="text" th:value="${#dates.format(sessionas.startDate, 'HH:mm')}" disabled/>
+        </div>
+    </div>
+    <br>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                Seating
+            </div>
+            <div class="card-body">
+                <div>
+                    <label>Row</label>
+                    <div class="dropdown">
+                        <select id="eile" class="form-control" aria-labelledby="dropdownMenuButton">
+                            <option value="null">Pasirinkti...</option>
+                            <option th:each="row : ${sessionas.getHall().getRows()}" th:text="${row.number}"
+                                    th:value="${row.id}">
+                            </option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <br>
-            <div>
-                <label>Seat</label>
-                <div class="dropdown">
-                    <select id="vieta" class="form-control" aria-labelledby="dropdownMenuButton">
-                        <option>...</option>
-                    </select>
+                <br>
+                <div>
+                    <label>Seat</label>
+                    <div class="dropdown">
+                        <select id="vieta" class="form-control" aria-labelledby="dropdownMenuButton">
+                            <option>...</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -68,24 +68,22 @@
 </body>
 
 <script>
-    $("#data").on('change', function (date) {
-        console.log(date.target.value);
+    $("#eile").on('change', function (e) {
         $.ajax({
-            url: '/movies/' + date.target.value,
+            url: '/session/row/' + e.target.value,
             dataType: 'json',
             type: 'GET',
             success: function (result) {
-                $('#filmas').empty();
+                $('#vieta').empty();
                 if (result.length === 0) {
-                    $('#filmas').append($('<option></option>').attr('value', null).text("Nėra"));
+                    $('#vieta').append($('<option></option>').attr('value', null).text("Nėra"));
                 } else {
-                    $('#filmas').append($('<option></option>').attr('value', null).text("Pasirinkti"));
+                    $('#vieta').append($('<option></option>').attr('value', null).text("Choose..."));
                 }
-                result.forEach(function (movie) {
-                    $('#filmas').append($('<option></option>')
-                        .attr('value', movie.id)
-                        .attr('data-movie', JSON.stringify(movie))
-                        .text(movie.name))
+                result.forEach(function (seat) {
+                    $('#vieta').append($('<option></option>')
+                        .attr('value', seat.id)
+                        .text(seat.number))
                 });
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -93,30 +91,6 @@
             }
         });
     });
-
-    $("#filmas").change(function () {
-        var option = $(this)[0].selectedOptions[0];
-        var movie = JSON.parse($(option).attr("data-movie"));
-        $('#laikas').empty();
-        if (movie.sessions.length === 0) {
-            $('#laikas').append($('<option></option>').attr('value', null).text("Nėra"));
-        } else {
-            $('#laikas').append($('<option></option>').attr('value', null).text("Pasirinkti"));
-        }
-        movie.sessions.forEach(function (session) {
-            $('#laikas').append($('<option></option>')
-                .attr('value', session.id)
-                .text(session.startDate.substr(11, 5)))
-        })
-    });
-
-    $("#laikas").change(function () {
-        var sessionChoice = $(this).val();
-
-        $('#row').empty();
-        $('#seat').empty();
-
-    })
 </script>
 
 </html>

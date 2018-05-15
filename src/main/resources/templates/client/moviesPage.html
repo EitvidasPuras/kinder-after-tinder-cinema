@@ -66,7 +66,7 @@
                         var sessionStartTime = session.startDate.substring(11, 16);
                         var sessionEndtime = session.endDate.substring(11, 16);
                         console.log(sessionStartTime);
-                        $("#movie-sessions-" + movie.id).append("<a href=\"/buy/" + session.id + "\">" + sessionStartTime + "-" + sessionEndtime + " </a>")
+                        $("#movie-sessions-" + movie.id).append("<a href=\"/session/" + session.id + "\">" + sessionStartTime + "-" + sessionEndtime + " </a>")
                     });
                 });
             },
