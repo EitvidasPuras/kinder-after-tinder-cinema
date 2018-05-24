@@ -19,9 +19,11 @@ public class SeedService {
     private final HallRepository hallRepository;
     private final RowRepository rowRepository;
     private final SeatRepository seatRepository;
+    private final GenreRepository genreRepository;
+    private final TicketRepository ticketRepository;
     private final Random random;
 
-    public SeedService(UserRepository userRepository, KinderUserRepository kinderUserRepository, MovieRepository movieRepository, SessionRepository sessionRepository, HallRepository hallRepository, RowRepository rowRepository, SeatRepository seatRepository) {
+    public SeedService(UserRepository userRepository, KinderUserRepository kinderUserRepository, MovieRepository movieRepository, SessionRepository sessionRepository, HallRepository hallRepository, RowRepository rowRepository, SeatRepository seatRepository, GenreRepository genreRepository, TicketRepository ticketRepository) {
         this.userRepository = userRepository;
         this.kinderUserRepository = kinderUserRepository;
         this.movieRepository = movieRepository;
@@ -29,20 +31,24 @@ public class SeedService {
         this.hallRepository = hallRepository;
         this.rowRepository = rowRepository;
         this.seatRepository = seatRepository;
+        this.genreRepository = genreRepository;
+        this.ticketRepository = ticketRepository;
         this.random = new Random();
     }
 
     public void seed() {
         if (needsSeeding()) {
+            addGenders();
             addUsers();
             addKinderUsers();
             addHalls();
             addMovies();
+            addTickets();
         }
     }
 
     private boolean needsSeeding() {
-        return !userRepository.findById(50).isPresent();
+        return userRepository.count() < 10;
     }
 
     private void addUsers() {
@@ -73,6 +79,7 @@ public class SeedService {
     }
 
     private void addKinderUsers() {
+        List<Genre> genres = genreRepository.findAll();
         for (int i = 1; i <= 50; i++) {
             User user = new User();
             user.setEmail("kinder" + i);
@@ -88,8 +95,9 @@ public class SeedService {
             kinderUser.setPhoneNumber("+" + random.nextInt(Integer.MAX_VALUE));
             kinderUser.setUser(user);
             kinderUser.setDescription("");
-            kinderUser.setInterestedAge(random.nextInt(7)+18);
-            kinderUser.setAge(random.nextInt(7)+18);
+            kinderUser.setInterestedAge(random.nextInt(7) + 18);
+            kinderUser.setAge(random.nextInt(7) + 18);
+            kinderUser.setInterestedGenre(genres.get(random.nextInt(genres.size())));
             kinderUserRepository.save(kinderUser);
         }
         kinderUserRepository.flush();
@@ -107,7 +115,7 @@ public class SeedService {
 
     private List<Row> generateRowsInHall(Hall hall) {
         List<Row> rows = new ArrayList<>();
-        int randomInt = random.nextInt(20);
+        int randomInt = random.nextInt(20) + 5;
         for (int i = 1; i <= randomInt; i++) {
             Row row = new Row();
             row.setNumber(i);
@@ -122,7 +130,7 @@ public class SeedService {
 
     private List<Seat> generateSeatsInRow(Row row) {
         List<Seat> seats = new ArrayList<>();
-        int randomInt = random.nextInt(30);
+        int randomInt = random.nextInt(30) + 5;
         for (int i = 1; i <= randomInt; i++) {
             Seat seat = new Seat();
             seat.setNumber(i);
@@ -135,8 +143,7 @@ public class SeedService {
     }
 
     private void addMovies() {
-        int randomInt = random.nextInt(20);
-        for (int i = 1; i <= randomInt; i++) {
+        for (int i = 1; i <= 5; i++) {
             Movie movie = new Movie();
             movie.set3D(random.nextBoolean());
             movie.setDescription("");
@@ -150,7 +157,7 @@ public class SeedService {
     private List<Session> generateMovieSessions(Movie movie) {
         List<Session> sessions = new ArrayList<>();
         List<Hall> halls = hallRepository.findAll();
-        int randomInt = random.nextInt(20);
+        int randomInt = random.nextInt(10) + 20;
         for (int i = 0; i < randomInt; i++) {
             Session session = new Session();
             session.setStartDate(new Date(random.nextInt(Integer.MAX_VALUE) * 1000L));
@@ -163,5 +170,51 @@ public class SeedService {
         }
         sessionRepository.flush();
         return sessions;
+    }
+
+    private void addGenders() {
+        Genre genre1 = new Genre();
+        genre1.setName("Horror");
+        genreRepository.save(genre1);
+
+        Genre genre2 = new Genre();
+        genre2.setName("Comedy");
+        genreRepository.save(genre2);
+
+        Genre genre3 = new Genre();
+        genre3.setName("Action");
+        genreRepository.save(genre3);
+
+        Genre genre4 = new Genre();
+        genre4.setName("Thriller");
+        genreRepository.save(genre4);
+
+        Genre genre5 = new Genre();
+        genre5.setName("Romantic");
+        genreRepository.save(genre5);
+
+        Genre genre6 = new Genre();
+        genre6.setName("Drama");
+        genreRepository.save(genre6);
+
+        Genre genre7 = new Genre();
+        genre7.setName("Fantastic");
+        genreRepository.save(genre7);
+        genreRepository.flush();
+    }
+
+    private void addTickets() {
+        List<Seat> seats = seatRepository.findAll();
+        List<Session> sessions = sessionRepository.findAll();
+        for (int i = 1; i <= 20; i++) {
+            Ticket ticket = new Ticket();
+            ticket.setCanceled(random.nextBoolean());
+            ticket.setPayDate(new Date(random.nextInt(Integer.MAX_VALUE) * 1000L));
+            ticket.setReserved(random.nextBoolean());
+            ticket.setSeat(seats.get(random.nextInt(seats.size())));
+            ticket.setSession(sessions.get(random.nextInt(sessions.size())));
+            ticketRepository.save(ticket);
+        }
+        ticketRepository.flush();
     }
 }
