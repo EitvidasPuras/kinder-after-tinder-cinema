@@ -105,7 +105,8 @@ public class SeedService {
 
     private List<Row> generateRowsInHall(Hall hall) {
         List<Row> rows = new ArrayList<>();
-        for (int i = 1; i <= random.nextInt(20); i++) {
+        int randomInt = random.nextInt(20);
+        for (int i = 1; i <= randomInt; i++) {
             Row row = new Row();
             row.setNumber(i);
             row.setHall(hall);
@@ -119,9 +120,10 @@ public class SeedService {
 
     private List<Seat> generateSeatsInRow(Row row) {
         List<Seat> seats = new ArrayList<>();
-        for (int i = 1; i <= random.nextInt(30); i++) {
+        int randomInt = random.nextInt(30);
+        for (int i = 1; i <= randomInt; i++) {
             Seat seat = new Seat();
-            seat.setNumber(random.nextInt(i));
+            seat.setNumber(i);
             seat.setRow(row);
             seatRepository.save(seat);
             seats.add(seat);
@@ -131,7 +133,8 @@ public class SeedService {
     }
 
     private void addMovies() {
-        for (int i = 1; i <= random.nextInt(20); i++) {
+        int randomInt = random.nextInt(20);
+        for (int i = 1; i <= randomInt; i++) {
             Movie movie = new Movie();
             movie.set3D(random.nextBoolean());
             movie.setDescription("");
@@ -145,7 +148,8 @@ public class SeedService {
     private List<Session> generateMovieSessions(Movie movie) {
         List<Session> sessions = new ArrayList<>();
         List<Hall> halls = hallRepository.findAll();
-        for (int i = 0; i < random.nextInt(20); i++) {
+        int randomInt = random.nextInt(20);
+        for (int i = 0; i < randomInt; i++) {
             Session session = new Session();
             session.setStartDate(new Date(random.nextInt(Integer.MAX_VALUE) * 1000L));
             session.setEndDate(new Date(random.nextInt(Integer.MAX_VALUE) * 1000L));
