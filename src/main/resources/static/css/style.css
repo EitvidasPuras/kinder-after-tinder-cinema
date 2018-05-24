@@ -25,6 +25,10 @@ input[type="submit"].removeReservation {
     cursor: crosshair;
 }
 
+input[type="submit"].removeReservation:hover {
+    background-color: olive;
+}
+
 .card-sessions {
     display: grid;
     font-size: 13px;
