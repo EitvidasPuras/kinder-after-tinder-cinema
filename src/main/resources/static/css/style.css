@@ -11,6 +11,19 @@
     margin-right: 16px;
 }
 
+.btn-reservation {
+    background-color: #49e6fa;
+    border-color: #000000;
+    float: right;
+}
+
+input[type="submit"].removeReservation {
+    color: red;
+    font-weight: bolder;
+    background-color: transparent;
+    border: dotted;
+}
+
 .card-sessions {
     display: grid;
     font-size: 13px;

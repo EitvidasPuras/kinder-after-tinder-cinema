@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="includes/head :: head">
+</head>
+<body>
+<div th:replace="includes/navbar :: body"></div>
+<div class="container">
+    <a id="naujaRezervacija" class="nav-link btn btn-reservation col-sm-3" href="/">Nauja rezervacija</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Pay date</th>
+            <th scope="col">Hall</th>
+            <th scope="col">Row</th>
+            <th scope="col">Seat</th>
+            <th scope="col">Movie</th>
+            <th scope="col">Price, BTC</th>
+            <th scope="col">Start time</th>
+            <th scope="col">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="ticket : ${tickets}">
+            <tr>
+                <td th:text="${ticket.id}"></td>
+                <td th:text="${ticket.payDate}"></td>
+                <td th:text="${ticket.session.hall.name}"></td>
+                <td th:text="${ticket.seat.row.number}"></td>
+                <td th:text="${ticket.seat.number}"></td>
+                <td th:text="${ticket.session.movie.name}"></td>
+                <td th:text="${ticket.session.price}"></td>
+                <td th:text="${ticket.session.startDate}"></td>
+                <td>
+                    <form action="/cashier/reservations/delete" method="POST">
+                        <input th:value="${ticket.id}" type="hidden" name="id">
+                        <input value="X" type="submit" class="removeReservation">
+                    </form>
+                </td>
+            </tr>
+        </th:block>
+        <tr th:if="${tickets.size()} == 0" style="font-weight: bolder; text-align: center">
+            <td colspan="8">
+                No tickets found
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
