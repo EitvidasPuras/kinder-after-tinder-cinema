@@ -39,7 +39,7 @@
 
         <ul class="nav navbar-nav ml-auto">
             <li class="nav-item" sec:authorize="!hasAnyRole('ROLE_MANAGER','ROLE_CASHIER')">
-                <a class="nav-link btn btn-kinder" href="#" style="color:white;">Kinder</a>
+                <a class="nav-link btn btn-kinder" href="/kinder" style="color:white;">Kinder</a>
             </li>
             <li class="nav-item" sec:authorize="isFullyAuthenticated()">
                 <span class="navbar-text"

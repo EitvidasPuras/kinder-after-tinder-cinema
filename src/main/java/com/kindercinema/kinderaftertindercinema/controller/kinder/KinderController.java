@@ -1,4 +1,4 @@
-package com.kindercinema.kinderaftertindercinema.controller;
+package com.kindercinema.kinderaftertindercinema.controller.kinder;
 
 import com.kindercinema.kinderaftertindercinema.entity.KinderUser;
 import com.kindercinema.kinderaftertindercinema.entity.User;
@@ -34,6 +34,9 @@ public class KinderController {
     public String openKinderRegistrationPage(Model model) {
         return "kinder/registrationPage";
     }
+
+    @GetMapping("/interestsPage")
+    public String openInterestsPage(Model model) {return "kinder/settingsPage";}
 
     @GetMapping("/profile")
     @PreAuthorize("hasAnyRole('CLIENT')")
