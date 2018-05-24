@@ -14,6 +14,11 @@ import java.util.Collections;
 @Getter
 @Setter
 public class User implements UserDetails {
+
+    public final static byte ROLE_CLIENT = 1;
+    public final static byte ROLE_CASHIER = 2;
+    public final static byte ROLE_MANAGER = 3;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -29,13 +34,13 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         String role = "";
         switch (getRole()) {
-            case 1:
+            case ROLE_CLIENT:
                 role = "CLIENT";
                 break;
-            case 2:
+            case ROLE_CASHIER:
                 role = "CASHIER";
                 break;
-            case 3:
+            case ROLE_MANAGER:
                 role = "MANAGER";
                 break;
         }

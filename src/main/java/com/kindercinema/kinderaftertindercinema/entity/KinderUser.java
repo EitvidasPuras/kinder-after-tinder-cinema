@@ -10,6 +10,10 @@ import javax.persistence.*;
 @Setter
 public class KinderUser {
 
+    public final static byte GENDER_MALE = 0;
+    public final static byte GENDER_FEMALE = 1;
+    public final static byte GENDER_OTHER = 2;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -20,5 +24,4 @@ public class KinderUser {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
-
 }
