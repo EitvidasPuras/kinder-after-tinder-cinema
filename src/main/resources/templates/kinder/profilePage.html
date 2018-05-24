@@ -16,13 +16,20 @@
                                 <h5 class="mb-3">User Profile</h5>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <h6>About</h6>
+                                        <h6><b>About</b></h6>
                                         <p>
-                                            Web Designer, UI/UX Engineer
+                                        <h6 class="mt-2"
+                                            th:text="${kinder.getDescription()}"></h6>
                                         </p>
-                                        <h6>Hobbies</h6>
-                                        <p>
-                                            Indie music, skiing and hiking. I love the great outdoors.
+                                        <h6><b>Interested in</b></h6>
+                                        <p th:if="${kinder.getInterestedIn() == 0}">
+                                            Male
+                                        </p>
+                                        <p th:if="${kinder.getInterestedIn() == 1}">
+                                            Female
+                                        </p>
+                                        <p th:if="${kinder.getInterestedIn() == 2}">
+                                            Other
                                         </p>
                                     </div>
                                 </div>
@@ -31,7 +38,7 @@
                         </div>
                     </div>
                     <div class="col-lg-4 order-lg-1 text-center">
-                        <img src="//placehold.it/150" class="mx-auto img-fluid img-circle d-block" alt="avatar">
+                        <img src="https://www.allfunnies.com/files/2012/02/Crazy-Women-Face-450x549.jpg" class="mx-auto img-fluid img-circle d-block" alt="avatar">
                         <h6 class="mt-2"
                             th:text="${#authentication.getPrincipal().getFirstName() + ' ' + #authentication.getPrincipal().getLastName()}"></h6>
                     </div>
@@ -41,12 +48,12 @@
                 <div class="col-9 col-sm-10 col-md-10 col-lg-11 col-xl-11">
                     <form>
                         <div class="form-group">
-                            <label for="exampleFormControlInput1">Phone Number</label>
+                            <label for="exampleFormControlInput1"><b>Phone Number</b></label>
                             <input type="string" class="form-control" id="exampleFormControlInput1"
                                    placeholder="+370666666">
                         </div>
                         <div class="form-group">
-                            <label for="exampleFormControlSelect1">Gender</label>
+                            <label for="exampleFormControlSelect1"><b>Gender</b></label>
                             <select class="form-control" id="exampleFormControlSelect1">
                                 <option>Male</option>
                                 <option>Female</option>
@@ -54,11 +61,11 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="exampleFormControlTextarea1">Describe yourself</label>
+                            <label for="exampleFormControlTextarea1"><b>Describe yourself</b></label>
                             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="exampleFormControlSelect1">Interested in</label>
+                            <label for="exampleFormControlSelect1"><b>Interested in</b></label>
                             <select class="form-control" id="exampleFormControlSelect2">
                                 <option>Male</option>
                                 <option>Female</option>
@@ -66,7 +73,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="exampleFormControlInput1">Your picture</label>
+                            <label for="exampleFormControlInput1"><b>Your picture</b></label>
                             <input type="file" class="form-control" id="exampleFormControlInput2">
                         </div>
                     </form>
