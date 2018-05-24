@@ -17,7 +17,6 @@
 </div>
 <script>
     $(document).ready(function () {
-        // executes when HTML-Document is loaded and DOM is ready
         $.ajax({
             url: "/movies/getAll",
             dataType: 'json',
@@ -61,11 +60,8 @@
                     movie.sessions.forEach(function (session) {
                         console.log(session);
                         var dd = new Date(session.startDate);
-                        //var startTime = session.startDate;
-                        //var endTime = session.endTime;
                         var sessionStartTime = session.startDate.substring(11, 16);
                         var sessionEndtime = session.endDate.substring(11, 16);
-                        console.log(sessionStartTime);
                         $("#movie-sessions-" + movie.id).append("<a href=\"/session/" + session.id + "\">" + sessionStartTime + "-" + sessionEndtime + " </a>")
                     });
                 });
