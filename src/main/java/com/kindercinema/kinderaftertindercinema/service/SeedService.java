@@ -88,6 +88,8 @@ public class SeedService {
             kinderUser.setPhoneNumber("+" + random.nextInt(Integer.MAX_VALUE));
             kinderUser.setUser(user);
             kinderUser.setDescription("");
+            kinderUser.setInterestedAge(random.nextInt(7)+18);
+            kinderUser.setAge(random.nextInt(7)+18);
             kinderUserRepository.save(kinderUser);
         }
         kinderUserRepository.flush();

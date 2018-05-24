@@ -17,10 +17,14 @@ public class KinderUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    private int age;
     private byte gender;
     private String phoneNumber;
     private String description;
     private byte interestedIn;
+    @ManyToOne
+    private Genre interestedGenre;
+    private int interestedAge;
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
