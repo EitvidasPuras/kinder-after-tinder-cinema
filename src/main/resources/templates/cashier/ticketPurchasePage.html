@@ -4,74 +4,78 @@
 </head>
 <body>
 <div th:replace="includes/navbar :: body"></div>
-<div class="container">
-    <div class="row" style="margin-left:0px;">
-        <div class="col-sm-6">
-            <label>Session date</label>
-            <div class="date-cell">
-                <input class="form-control" type="date" id="data">
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="card">
-                <b id="price">Price: </b>
-                <b id="hall">Hall: </b>
-            </div>
-        </div>
-    </div>
-    <br>
-    <div class="col-sm-6">
-        <label>Movie</label>
-        <div class="dropdown">
-            <select id="filmas" class="form-control" aria-labelledby="dropdownMenuButton">
-                <option>...</option>
-            </select>
-        </div>
-    </div>
-    <br>
-    <div class="col-sm-6">
-        <label>Session time</label>
-        <div class="dropdown">
-            <select id="laikas" class="form-control" aria-labelledby="dropdownMenuButton">
-                <option>...</option>
-            </select>
-        </div>
-    </div>
-
-    <br>
-    <div class="row" style="margin-left:0px;">
-        <div class="col-sm-6">
-            <div class="card">
-                <div class="card-header">
-                    Seating
+<form method="POST" action="/cashier/ticketpurchase/save">
+    <div class="container">
+        <div class="row" style="margin-left:0px;">
+            <div class="col-sm-6">
+                <label>Session date</label>
+                <div class="date-cell">
+                    <input class="form-control" type="date" id="data">
                 </div>
-                <div class="card-body">
-                    <div>
-                        <label>Row</label>
-                        <div class="dropdown">
-                            <select id="eile" class="form-control" aria-labelledby="dropdownMenuButton">
-                                <option>...</option>
-                            </select>
-                        </div>
-                    </div>
-                    <br>
-                    <div>
-                        <label>Seat</label>
-                        <div class="dropdown">
-                            <select id="vieta" class="form-control" aria-labelledby="dropdownMenuButton">
-                                <option>...</option>
-                            </select>
-                        </div>
-                    </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <b id="price">Price: </b>
+                    <b id="hall">Hall: </b>
                 </div>
             </div>
         </div>
+        <br>
         <div class="col-sm-6">
-            <a id="atsiskaitymas" class="nav-link btn btn-payment col-sm-6 disabled" href="/">Priimti atsiskaityma</a>
+            <label>Movie</label>
+            <div class="dropdown">
+                <select id="filmas" class="form-control" aria-labelledby="dropdownMenuButton">
+                    <option>...</option>
+                </select>
+            </div>
+        </div>
+        <br>
+        <div class="col-sm-6">
+            <label>Session time</label>
+            <div class="dropdown">
+                <select name="sessionSelect" id="laikas" class="form-control" aria-labelledby="dropdownMenuButton">
+                    <option>...</option>
+                </select>
+            </div>
+        </div>
+
+        <br>
+        <div class="row" style="margin-left:0px;">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        Seating
+                    </div>
+                    <div class="card-body">
+                        <div>
+                            <label>Row</label>
+                            <div class="dropdown">
+                                <select id="eile" class="form-control" aria-labelledby="dropdownMenuButton">
+                                    <option>...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                        <div>
+                            <label>Seat</label>
+                            <div class="dropdown">
+                                <select name="seatSelect" id="vieta" class="form-control"
+                                        aria-labelledby="dropdownMenuButton">
+                                    <option>...</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <input name="sessionIdName" id="sessionId" type="hidden">
+                <input value="Accept payment" type="submit" id="atsiskaitymas" class="nav-link btn btn-payment col-sm-6"
+                       disabled>
+            </div>
         </div>
     </div>
-</div>
-
+</form>
 </body>
 
 <script>
@@ -118,7 +122,8 @@
 
     $("#laikas").change(function () {
         var session = JSON.parse($(this).val());
-        $('#price').text("Price: " + session.price + " €");
+        $('#price').text("Price: " + session.price + " BTC");
+        $('#sessionId').val(session.id);
         $.ajax({
             url: 'ticketpurchase/hall/' + session.id,
             dataType: 'json',
@@ -160,9 +165,9 @@
         $("#vieta").change(function () {
             if ($('#vieta :selected').text() !== "Nėra" && $('#vieta :selected').text() !== "Pasirinkti" &&
                 $('#vieta :selected').text() !== "...") {
-                $("#atsiskaitymas").attr('class', 'nav-link btn btn-payment col-sm-6 enabled');
+                $("#atsiskaitymas").removeAttr("disabled");
             } else {
-                $("#atsiskaitymas").attr('class', 'nav-link btn btn-payment col-sm-6 disabled')
+                $("#atsiskaitymas").attr("disabled", true);
             }
         })
 
