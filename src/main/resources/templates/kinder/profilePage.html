@@ -21,16 +21,29 @@
                                         <h6 class="mt-2"
                                             th:text="${kinder.getDescription()}"></h6>
                                         </p>
-                                        <h6><b>Interested in</b></h6>
-                                        <p th:if="${kinder.getInterestedIn() == 0}">
+                                        <h4><b>Interested in</b></h4>
+                                        <h6><b>Gender:</b></h6>
+
+                                        <li th:if="${kinder.getInterestedIn() == 0}">
                                             Male
-                                        </p>
-                                        <p th:if="${kinder.getInterestedIn() == 1}">
+                                        </li>
+                                        <li th:if="${kinder.getInterestedIn() == 1}">
                                             Female
-                                        </p>
-                                        <p th:if="${kinder.getInterestedIn() == 2}">
+                                        </li>
+                                        <li th:if="${kinder.getInterestedIn() == 2}">
                                             Other
-                                        </p>
+                                        </li>
+                                        <br>
+                                        <h6 th:if="${kinder.getInterestedAge() != 0}"><b>Age:</b></h6>
+                                        <li th:if="${kinder.getInterestedAge() != 0}"
+                                            th:text="${kinder.getInterestedAge()}">
+                                        </li>
+                                        <br>
+                                        <h6 th:if="${kinder.getInterestedGenre() != null}"><b>Movie Genre:</b></h6>
+                                        <li th:if="${kinder.getInterestedGenre() != null}"
+                                            th:text='${kinder.getInterestedGenre().getName()}'>
+                                        </li>
+
                                     </div>
                                 </div>
                                 <!--/row-->

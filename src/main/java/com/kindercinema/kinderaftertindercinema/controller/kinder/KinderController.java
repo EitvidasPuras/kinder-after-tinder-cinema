@@ -40,6 +40,9 @@ public class KinderController {
 
     @GetMapping("/interestsPage")
     public String openInterestsPage(Model model) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        KinderUser kinderUser = kinderUserRepository.findByUser(user);
+        model.addAttribute("kinderUser", kinderUser);
         return "kinder/settingsPage";
     }
 
