@@ -1,5 +1,6 @@
 package com.kindercinema.kinderaftertindercinema.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -15,7 +16,11 @@ public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Europe/Vilnius")
     private Date startDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Europe/Vilnius")
     private Date endDate;
     private double price;
 
