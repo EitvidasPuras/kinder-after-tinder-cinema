@@ -17,7 +17,7 @@
     float: right;
 }
 
-input[type="submit"].removeReservation {
+.remove {
     color: red;
     font-weight: bolder;
     background-color: transparent;
@@ -25,8 +25,17 @@ input[type="submit"].removeReservation {
     cursor: crosshair;
 }
 
-input[type="submit"].removeReservation:hover {
+.add {
+    color: green;
+    font-weight: bolder;
+    background-color: transparent;
+    border: dotted;
+    cursor: crosshair;
+}
+
+.remove:hover, .add:hover {
     background-color: olive;
+    color: white;
 }
 
 .card-sessions {

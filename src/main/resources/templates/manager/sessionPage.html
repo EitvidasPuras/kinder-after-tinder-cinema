@@ -5,7 +5,144 @@
 <body>
 <div th:replace="includes/navbar :: body"></div>
 <div class="container">
-    <h3>Sessions Page</h3>
+    <div class="col-sm-8">
+        <label class="col-form-label" for="date">Date</label>
+        <div>
+            <input class="form-control" id="date" type="date">
+        </div>
+
+        <br/>
+
+        <label for="movies">Movie</label>
+        <div>
+            <select id="movies" class="form-control">
+                <option>Choose...</option>
+            </select>
+        </div>
+
+        <br/>
+        <br/>
+
+        <form id="form">
+            <div class="card">
+                <div class="card-header">Sessions</div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Time from</th>
+                            <th>Time to</th>
+                            <th>Price, BTC</th>
+                            <th>Hall</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody id="table-body">
+                        <tr>
+                            <td><input id="startTime" type="time" class="form-control" required></td>
+                            <td><input id="endTime" type="time" class="form-control" required></td>
+                            <td><input id="price" type="number" step="0.01" class="form-control" required></td>
+                            <td>
+                                <select id="hall" class="form-control">
+                                    <option>Choose...</option>
+                                    <option th:each="hall : ${halls}" th:text="${hall.name}"
+                                            th:value="${hall.id}">
+                                    </option>
+                                </select>
+                            </td>
+                            <td><input type="submit" class="add" value="+"/></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
+
+<script>
+    $("#date").on('change', function (date) {
+        $.ajax({
+            url: '/movies/' + date.target.value,
+            dataType: 'json',
+            type: 'GET',
+            success: function (result) {
+                var movies = $('#movies');
+                movies.empty();
+                if (result.length === 0) {
+                    movies.append($('<option></option>').attr('value', null).text("Empty"));
+                } else {
+                    movies.append($('<option></option>').attr('value', null).text("Choose..."));
+                }
+                result.forEach(function (movie) {
+                    movies.append($('<option></option>')
+                        .attr('value', movie.id)
+                        .attr('data-movie', JSON.stringify(movie))
+                        .text(movie.name))
+                });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });
+    });
+
+    $("#movies").change(function () {
+        var option = $(this)[0].selectedOptions[0];
+        var movie = JSON.parse($(option).attr("data-movie"));
+        movie.sessions.forEach(function (session) {
+            appendRow(session);
+        });
+    });
+
+    function deleteSession(id) {
+        $.post('/manager/sessions/delete', {id: id},
+            function (result) {
+                if (result === "success") {
+                    $("#row_" + id).remove();
+                }
+            }
+        );
+    }
+
+    function appendRow(session) {
+        $("#table-body").append(
+            '<tr id="row_' + session.id + '">' +
+            '<td>' + session.startDate.substr(11, 5) + '</td>' +
+            '<td>' + session.endDate.substr(11, 5) + '</td>' +
+            '<td>' + session.price + '</td>' +
+            '<td>' + session.hallName + '</td>' +
+            '<td><button type="button" class="remove" onclick="deleteSession(' + session.id + ')">X</button></td>' +
+            '</tr>')
+    }
+
+    $("#form").on("submit", function (e) {
+        e.preventDefault();
+        var option = $("#movies")[0].selectedOptions[0];
+
+        console.log({
+            date: $("#date").val(),
+            startTime: $("#startTime").val(),
+            endTime: $("#endTime").val(),
+            price: $("#price").val(),
+            hallId: $("#hall").val(),
+            movieId: JSON.parse($(option).attr("data-movie")).id
+        });
+
+        $.post('/manager/sessions/new', {
+                date: $("#date").val(),
+                startTime: $("#startTime").val(),
+                endTime: $("#endTime").val(),
+                price: $("#price").val(),
+                hallId: $("#hall").val(),
+                movieId: JSON.parse($(option).attr("data-movie")).id
+            },
+            function (result) {
+                debugger;
+                appendRow(result)
+            }
+        );
+    });
+</script>
 </body>
 </html>
