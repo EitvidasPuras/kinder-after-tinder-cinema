@@ -48,7 +48,7 @@ public class TicketPurchaseController {
     }
 
     @PostMapping("/buy")
-    public String add(@RequestParam("sessionId") int sessionId, @RequestParam("seat") int seatId) {
+    public String buyTicket(@RequestParam("sessionId") int sessionId, @RequestParam("seat") int seatId) {
         Session session = sessionRepository.findById(sessionId).get();
         Seat seat = seatRepository.findById(seatId).get();
         Ticket ticket = new Ticket();

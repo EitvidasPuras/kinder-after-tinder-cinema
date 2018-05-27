@@ -5,7 +5,8 @@
 <body>
 <div th:replace="includes/navbar :: body"></div>
 <div class="container">
-    <a id="naujaRezervacija" class="nav-link btn btn-reservation col-sm-3" href="/">Nauja rezervacija</a>
+    <a id="naujaRezervacija" class="nav-link btn btn-reservation col-sm-3" href="/cashier/reservations/create">Nauja
+        rezervacija</a>
     <table class="table">
         <thead>
         <tr>
@@ -21,9 +22,9 @@
         </tr>
         </thead>
         <tbody>
-        <th:block th:each="ticket : ${tickets}">
+        <th:block th:each="ticket,index : ${tickets}">
             <tr>
-                <td th:text="${ticket.id}"></td>
+                <td th:text="${index.index+1}"></td>
                 <td th:text="${ticket.payDate}"></td>
                 <td th:text="${ticket.session.hall.name}"></td>
                 <td th:text="${ticket.seat.row.number}"></td>
