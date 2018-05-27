@@ -27,7 +27,7 @@ public class MovieController {
     }
 
     @GetMapping
-    public String moviesPage() {
+    public String openMoviesPage() {
         return "client/moviesPage";
     }
 

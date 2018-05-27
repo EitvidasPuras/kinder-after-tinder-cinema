@@ -58,6 +58,6 @@ public class TicketPurchaseController {
         ticket.setSession(session);
         ticket.setSeat(seat);
         ticketRepository.saveAndFlush(ticket);
-        return "redirect:/movies";
+        return "redirect:https://e.seb.lt";
     }
 }

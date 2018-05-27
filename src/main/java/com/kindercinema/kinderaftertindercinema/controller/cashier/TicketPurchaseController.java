@@ -31,7 +31,7 @@ public class TicketPurchaseController {
     }
 
     @GetMapping
-    public String ticketPurchase() {
+    public String openTicketPurchasePage() {
         return "cashier/ticketPurchasePage";
     }
 
