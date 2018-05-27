@@ -38,7 +38,8 @@
                         </div>
                     </div>
                     <div class="col-lg-4 order-lg-1 text-center">
-                        <img src="https://www.allfunnies.com/files/2012/02/Crazy-Women-Face-450x549.jpg" class="mx-auto img-fluid img-circle d-block" alt="avatar">
+                        <img src="https://www.allfunnies.com/files/2012/02/Crazy-Women-Face-450x549.jpg"
+                             class="mx-auto img-fluid img-circle d-block" alt="avatar">
                         <h6 class="mt-2"
                             th:text="${#authentication.getPrincipal().getFirstName() + ' ' + #authentication.getPrincipal().getLastName()}"></h6>
                     </div>
@@ -46,36 +47,39 @@
             </div>
             <div th:if="${kinder == null}">
                 <div class="col-9 col-sm-10 col-md-10 col-lg-11 col-xl-11">
-                    <form>
+                    <form action="profile/save" method="post">
                         <div class="form-group">
                             <label for="exampleFormControlInput1"><b>Phone Number</b></label>
-                            <input type="string" class="form-control" id="exampleFormControlInput1"
+                            <input type="string" class="form-control" name="Phone_Number" id="exampleFormControlInput1"
                                    placeholder="+370666666">
                         </div>
                         <div class="form-group">
                             <label for="exampleFormControlSelect1"><b>Gender</b></label>
-                            <select class="form-control" id="exampleFormControlSelect1">
-                                <option>Male</option>
-                                <option>Female</option>
-                                <option>Other</option>
+                            <select class="form-control" name="Gender" id="exampleFormControlSelect1">
+                                <option value="1">Male</option>
+                                <option value="2">Female</option>
+                                <option value="3">Other</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="exampleFormControlTextarea1"><b>Describe yourself</b></label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <textarea class="form-control" name="Description" id="exampleFormControlTextarea1"
+                                      rows="3"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="exampleFormControlSelect1"><b>Interested in</b></label>
-                            <select class="form-control" id="exampleFormControlSelect2">
-                                <option>Male</option>
-                                <option>Female</option>
-                                <option>Other</option>
+                            <select class="form-control" name="InterestedIn" id="exampleFormControlSelect2">
+                                <option value="1">Male</option>
+                                <option value="2">Female</option>
+                                <option value="3">Other</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="exampleFormControlInput1"><b>Your picture</b></label>
-                            <input type="file" class="form-control" id="exampleFormControlInput2">
+                            <label for="exampleFormControlInput1"><b>Your age</b></label>
+                            <input type="int" class="form-control" name="Age" id="exampleFormControlInput1"
+                                   placeholder="20">
                         </div>
+                        <button type="submit" class="btn">Apply</button>
                     </form>
                 </div>
             </div>

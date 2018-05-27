@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="includes/head :: head">
+</head>
+<body>
+<div th:replace="includes/navbar :: body"></div>
+<div class="row">
+    <div th:replace="includes/kinderNavBar :: body"></div>
+    <div class="col-lg-4 order-lg-1 text-center">
+
+        <h6 class="mt-2"
+            th:text="${#authentication.getPrincipal().getFirstName() + ' ' + #authentication.getPrincipal().getLastName()}"></h6>
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-secondaryX"><b>X</b></button>
+            <button type="button" class="btn btn-secondaryInfo">Profile</button>
+            <button type="button" class="btn btn-secondaryLove"><b>♥</b></button>
+        </div>
+    </div>
+
+</div>
+
+<div class="row" id="kknd">
+
+</div>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "/matching/getAll",
+            dataType: 'json',
+            success: function (result) {
+                result.forEach(function (kinder) {
+                    $("#kknd").append("<div id='kinder" + "'>" +
+                        "            <div class=\"col-sm-3\" style=\"padding-top:10px;\">" +
+                        "                <div class=\"card\" style=\"width: 15rem;\">" +
+                        "                    <img class=\"card-img-top\" src=\"https://placeimg.com/286/180/any\" alt=\"Card image cap\">" +
+                        "                    <div class=\"card-body\">" +
+                        "                        <h5 class=\"card-title\">" + kinder.age + "</h5>" +
+                        "                        <p class=\"card-text\">" + kinder.description + "</p>" +
+                        "                    </div>" +
+                        "                </div>" +
+                        "            </div>" +
+                        "        </div>");
+                });
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    });
+</script>
+</body>
+</html>

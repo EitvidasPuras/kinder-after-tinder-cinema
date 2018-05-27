@@ -10,10 +10,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/kinder")
@@ -44,6 +43,11 @@ public class KinderController {
         return "kinder/settingsPage";
     }
 
+    @GetMapping("/matching")
+    public String openMatchingPage(Model model) {
+        return "kinder/matchingPage";
+    }
+
     @PostMapping("/interestsPage/save")
     public String saveInterests(@RequestParam("Interested_in") byte interestedIn, @RequestParam("Interested_age") int interestedAge, @RequestParam("Interested_genre") int interestedGenre) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -56,6 +60,35 @@ public class KinderController {
         return "redirect:/kinder/interestsPage";
     }
 
+    @PostMapping("/profile/save")
+    public String saveProfile(@RequestParam("Phone_Number") String phoneNum, @RequestParam("Gender") byte gender, @RequestParam("Description") String description, @RequestParam("InterestedIn") byte interestedIn, @RequestParam("Age") int age) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        KinderUser kinderUser = kinderUserRepository.findByUser(user);
+        //Genre genre = genreRepository.findById(interestedGenre).get();
+        if (kinderUser == null) {
+            kinderUser = new KinderUser();
+            kinderUser.setUser(user);
+        }
+        kinderUser.setPhoneNumber(phoneNum);
+        kinderUser.setGender(gender);
+        kinderUser.setDescription(description);
+        kinderUser.setAge(age);
+        kinderUserRepository.saveAndFlush(kinderUser);
+        return "redirect:/kinder/profile";
+    }
+
+   /* @PostMapping("/profile/save")
+    public String saveProfile(@RequestParam("Interested_in") byte interestedIn, @RequestParam("Interested_age") int interestedAge, @RequestParam("Interested_genre") int interestedGenre) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        KinderUser kinderUser = kinderUserRepository.findByUser(user);
+        Genre genre = genreRepository.findById(interestedGenre).get();
+        kinderUser.setInterestedIn(interestedIn);
+        kinderUser.setInterestedAge(interestedAge);
+        kinderUser.setInterestedGenre(genre);
+        kinderUserRepository.saveAndFlush(kinderUser);
+        return "redirect:/kinder/interestsPage";
+    }*/
+
     @GetMapping("/profile")
     @PreAuthorize("hasAnyRole('CLIENT')")
     public String openKinderProfilePage(Model model) {
@@ -63,6 +96,22 @@ public class KinderController {
         KinderUser kinderUser = kinderUserRepository.findByUser(user);
         model.addAttribute("kinder", kinderUser);
         return "kinder/profilePage";
+    }
+
+  /*  @GetMapping("/{age}")
+    @ResponseBody
+    public List<KinderUser> getMatchByAge(@PathVariable int age) throws ParseException {
+        //SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        //Date currentDate = format.parse(date);
+        //Date nextDate = getNextDay(currentDate);
+        int ageFrom = age;
+        return kinderUserRepository.getMatchByAge(ageFrom);
+    }*/
+
+    @GetMapping("/getAll")
+    @ResponseBody
+    public List<KinderUser> getAllUsers() {
+        return kinderUserRepository.findAll();
     }
 
 

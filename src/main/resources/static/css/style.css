@@ -34,3 +34,33 @@ input[type="submit"].removeReservation:hover {
     font-size: 13px;
     margin-right: 6px;
 }
+
+.btn-secondaryLove {
+    background-color: grey;
+    font-size: 32px;
+}
+
+.btn-secondaryX {
+    background-color: grey;
+    font-size: 32px;
+}
+
+.btn-secondaryInfo {
+    background-color: grey;
+    font-size: 32px;
+}
+
+.btn-secondaryX:hover {
+    background-color: red; /* Green */
+    color: white;
+}
+
+.btn-secondaryLove:hover {
+    background-color: #4ffa4c;
+    color: white;
+}
+
+.btn-secondaryInfo:hover {
+    background-color: #49e6fa;
+    color: white;
+}
