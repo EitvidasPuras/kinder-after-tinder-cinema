@@ -90,6 +90,7 @@ public class SeedService {
             userRepository.save(user);
 
             KinderUser kinderUser = new KinderUser();
+            kinderUser.setGenre(genres.get(random.nextInt(genres.size())));
             kinderUser.setGender((byte) random.nextInt(3));
             kinderUser.setInterestedIn((byte) random.nextInt(3));
             kinderUser.setPhoneNumber("+" + random.nextInt(Integer.MAX_VALUE));

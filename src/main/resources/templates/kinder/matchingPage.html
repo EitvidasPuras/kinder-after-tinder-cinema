@@ -7,12 +7,21 @@
 <div class="row">
     <div th:replace="includes/kinderNavBar :: body"></div>
     <div class="col-lg-4 order-lg-1 text-center">
-
-        <h6 class="mt-2"
-            th:text="${#authentication.getPrincipal().getFirstName() + ' ' + #authentication.getPrincipal().getLastName()}"></h6>
         <div class="btn-group" role="group" aria-label="Basic example">
             <button type="button" class="btn btn-secondaryX"><b>X</b></button>
-            <button type="button" class="btn btn-secondaryInfo">Profile</button>
+            <div id="matching-system">
+                <div class="card" style="width: 18rem; height: 310px;" th:each="opponent,index : ${matchingList}"
+                     th:id="${'match'+index.index}" hidden>
+                    <img class="card-img-top" src="https://placeimg.com/286/180/any" alt="Card image cap">
+                    <div class="card-body">
+                        <h3 th:text="${opponent.getUser().getEmail()}"></h3>
+                        <p class="card-text" th:text="${opponent.getDescription()}"></p>
+                    </div>
+                </div>
+            </div>
+            <div id="system-nothing-left" style="height: 310px;width: 288px;" hidden>
+                <h1 class="text-center" style="margin-top:110px;">No matches left</h1>
+            </div>
             <button type="button" class="btn btn-secondaryLove"><b>♥</b></button>
         </div>
     </div>
@@ -24,29 +33,53 @@
 </div>
 <script>
     $(document).ready(function () {
-        $.ajax({
-            url: "/matching/getAll",
-            dataType: 'json',
-            success: function (result) {
-                result.forEach(function (kinder) {
-                    $("#kknd").append("<div id='kinder" + "'>" +
-                        "            <div class=\"col-sm-3\" style=\"padding-top:10px;\">" +
-                        "                <div class=\"card\" style=\"width: 15rem;\">" +
-                        "                    <img class=\"card-img-top\" src=\"https://placeimg.com/286/180/any\" alt=\"Card image cap\">" +
-                        "                    <div class=\"card-body\">" +
-                        "                        <h5 class=\"card-title\">" + kinder.age + "</h5>" +
-                        "                        <p class=\"card-text\">" + kinder.description + "</p>" +
-                        "                    </div>" +
-                        "                </div>" +
-                        "            </div>" +
-                        "        </div>");
-                });
-            },
-            error: function (err) {
-                console.log(err);
+        $("#match0").removeAttr('hidden', 'hidden');
+
+        var matchingListLength = $(".card").length;
+        if (matchingListLength == 0) {
+
+            $("#system-nothing-left").removeAttr('hidden', 'hidden');
+        }
+        var notHiddenElementIndex = 0;
+
+        $(".btn").on('click', function () {
+            if (notHiddenElementIndex + 1 >= matchingListLength) {
+                $("#matching-system").attr('hidden', 'hidden');
+                $("#system-nothing-left").removeAttr('hidden', 'hidden');
+            } else {
+                for (i = notHiddenElementIndex; i < matchingListLength; i++) {
+                    $("#match" + i).attr('hidden', 'hidden');
+                }
+                notHiddenElementIndex++;
+                $("#match" + notHiddenElementIndex).removeAttr('hidden', 'hidden');
             }
-        });
+        })
     });
+
+    /*   $(document).ready(function () {
+           $.ajax({
+               url: "/matching",
+               dataType: 'json',
+               success: function (result) {
+                   result.forEach(function (kinder) {
+                       $("#kknd").append("<div id='kinder" + "'>" +
+                           "            <div class=\"col-sm-3\" style=\"padding-top:10px;\">" +
+                           "                <div class=\"card\" style=\"width: 15rem;\">" +
+                           "                    <img class=\"card-img-top\" src=\"https://placeimg.com/286/180/any\" alt=\"Card image cap\">" +
+                           "                    <div class=\"card-body\">" +
+                           "                        <h5 class=\"card-title\">" + kinder.age + "</h5>" +
+                           "                        <p class=\"card-text\">" + kinder.description + "</p>" +
+                           "                    </div>" +
+                           "                </div>" +
+                           "            </div>" +
+                           "        </div>");
+                   });
+               },
+               error: function (err) {
+                   console.log(err);
+               }
+           });
+       });*/
 </script>
 </body>
 </html>

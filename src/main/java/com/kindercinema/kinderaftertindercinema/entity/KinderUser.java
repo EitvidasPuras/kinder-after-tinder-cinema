@@ -22,6 +22,9 @@ public class KinderUser {
     private String phoneNumber;
     private String description;
     private byte interestedIn;
+
+    @ManyToOne
+    private Genre genre;
     @ManyToOne
     private Genre interestedGenre;
     private int interestedAge;
