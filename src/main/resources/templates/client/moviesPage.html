@@ -16,6 +16,19 @@
     </div>
 </div>
 <script>
+    function fixMovieSessionTime(movie, date) {
+        var newArrayOfSessions = [];
+        movie.sessions.forEach(function (session, index) {
+            var selectedDate = new Date(date);
+            var sessionDate = new Date(session.startDate);
+            //add 1 hour
+            sessionDate.setTime(sessionDate.getTime() + (60 * 60 * 1000));
+            if (sessionDate.toDateString() == selectedDate.toDateString()) {
+                newArrayOfSessions.push(session);
+            }
+        });
+        movie.sessions = newArrayOfSessions;
+    }
     $(document).ready(function () {
         $.ajax({
             url: "/movies/getAll",
@@ -57,6 +70,7 @@
                 result.forEach(function (movie) {
                     $("#movie" + movie.id).show();
                     $("#movie-sessions-" + movie.id).empty();
+                    fixMovieSessionTime(movie, date);
                     movie.sessions.forEach(function (session) {
                         console.log(session);
                         var dd = new Date(session.startDate);

@@ -80,6 +80,20 @@
 </body>
 
 <script>
+    function fixMovieSessionTime(movie, date) {
+        var newArrayOfSessions = [];
+        movie.sessions.forEach(function (session, index) {
+            var selectedDate = new Date(date);
+            var sessionDate = new Date(session.startDate);
+            //add 1 hour
+            sessionDate.setTime(sessionDate.getTime() + (60 * 60 * 1000));
+            if (sessionDate.toDateString() == selectedDate.toDateString()) {
+                newArrayOfSessions.push(session);
+            }
+        });
+        movie.sessions = newArrayOfSessions;
+    }
+
     $("#data").on('change', function (date) {
         $.ajax({
             url: '/movies/' + date.target.value,
@@ -93,6 +107,7 @@
                     $('#filmas').append($('<option></option>').attr('value', null).text("Pasirinkti"));
                 }
                 result.forEach(function (movie) {
+                    fixMovieSessionTime(movie, date.target.value);
                     $('#filmas').append($('<option></option>')
                         .attr('value', movie.id)
                         .attr('data-movie', JSON.stringify(movie))
@@ -171,6 +186,7 @@
                 $("#atsiskaitymas").attr("disabled", true);
             }
         })
+
 
     })
 </script>
