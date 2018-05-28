@@ -20,7 +20,18 @@
                 </div>
                 <div class="form-group">
                     <label for="exampleFormControlSelect1">Movie genre</label>
-                    <select class="form-control" name="Interested_genre" id="exampleFormControlSelect2">
+                    <select th:if="${kinderUser.getInterestedGenre() == null}" class="form-control"
+                            name="Interested_genre">
+                        <option value="1">Horror</option>
+                        <option value="2">Comedy</option>
+                        <option value="3">Action</option>
+                        <option value="4">Thriller</option>
+                        <option value="5">Romantic</option>
+                        <option value="6">Drama</option>
+                        <option value="7">Fantastic</option>
+                    </select>
+                    <select th:if="${kinderUser.getInterestedGenre() != null}" class="form-control"
+                            name="Interested_genre" id="exampleFormControlSelect2">
                         <option th:selected="${kinderUser.getInterestedGenre().getId() == 1}" value="1">Horror</option>
                         <option th:selected="${kinderUser.getInterestedGenre().getId() == 2}" value="2">Comedy</option>
                         <option th:selected="${kinderUser.getInterestedGenre().getId() == 3}" value="3">Action</option>
