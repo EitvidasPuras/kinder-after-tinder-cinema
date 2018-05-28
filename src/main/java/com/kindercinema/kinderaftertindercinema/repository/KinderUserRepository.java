@@ -13,7 +13,7 @@ public interface KinderUserRepository extends JpaRepository<KinderUser, Integer>
     KinderUser findByUser(User user);
 
     @Query("select k from KinderUser k where k.id != ?1 and k.age = ?2 and k.genre = ?3 and k.gender = ?4")
-    List<KinderUser> getMatchByAge(int userId, int age, Genre genre, byte gender);
+    List<KinderUser> getMatchByInterests(int userId, int age, Genre genre, byte gender);
 
 
 }

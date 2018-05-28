@@ -54,9 +54,9 @@ public class KinderController {
         int age = kinderUser.getInterestedAge();
         Genre genre = kinderUser.getInterestedGenre();
         byte gender = kinderUser.getInterestedIn();
-        List<KinderUser> kinderMatchingList = kinderUserRepository.getMatchByAge(userId, age, genre, gender);
+        List<KinderUser> kinderMatchingList = kinderUserRepository.getMatchByInterests(userId, age, genre, gender);
         model.addAttribute("matchingList", kinderMatchingList);
-        return "kinder/matchingPage";
+        return "kinder/partnerPage";
     }
 
     @PostMapping("/interestsPage/save")
